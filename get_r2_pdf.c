@@ -35,11 +35,11 @@ void get_popen(char *directory){
     return;
 }
 
-int main (argc,* argv[]){
+int main (int argc, char *argv[]){
 
-  if(!(get_popen(argv[0]))){
-    printf("get_open function failed.")
-  }
+  if((get_popen(argv[0])){
+      printf("get_open function failed.");
+
 
   //FILE *fopen (const char * argv[0], const char * mode);
 
