@@ -1,0 +1,69 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAXPTR 64;
+
+int get_popen(const char *directory_and_file, int len){
+
+  FILE *fp;
+  char command[100];
+  char data[80];
+
+  printf("%s\n", directory_and_file);
+
+  //prep command with radare2 shell activation;
+  sprintf(command, "objdump -d %s", directory_and_file);
+  //sprintf(command, "ls ~/Tools/");
+  if((fp = popen(command, "r")) == NULL){
+    printf("Error opening pipe!\n");
+    return -1;
+    }
+
+    while(fgets(data, 2048, fp) != NULL){
+        printf("%s", data);
+    }
+  //Error handling
+/*
+  //prep command for pdf call to radare2 shell
+  sprintf(command, "pdf @ main");
+  //Setup pipe for reading/writing and exectue command
+  pf = popen(command,"r");
+  //Error handling
+*/
+  ///fgets(data, 512, pf);
+
+  //the data is now in 'data'
+
+  if (pclose(fp) !=0){
+    fprintf(stderr, " Error: Failed to close command stream \n");
+  }
+
+    return 0;
+}
+
+int main(int argc, char *argv[]){
+
+  char *directory = (char*)NULL;
+  int len = 0;
+
+  if (argc !=2) return 1;
+
+  len = strlen(argv[1]);
+
+  if((directory = (char*) malloc(len + 1)) != NULL){
+    memset(directory, '\0', len + 1);
+    strncpy(directory, argv[1], len);
+  }
+
+  if(get_popen(directory, len) != 0){
+    printf("get_open function failed.");
+  }
+
+  //FILE *fopen (const char * argv[0], const char * mode);
+
+  free(directory);
+
+
+  return 0;
+}
